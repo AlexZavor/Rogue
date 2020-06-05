@@ -413,7 +413,6 @@ def equipItem(item):
 
     inventory()
 
-
 def help():
     clear()
     print(BLUE)
