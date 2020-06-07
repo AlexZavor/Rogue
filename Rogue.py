@@ -1,3 +1,13 @@
+# This is the source code for this game, if you want to try and play it, the file is inside the "dist" folder.
+# Enjoy
+# 
+# 
+# V0.2
+# RELEASES--
+# Inital Beta
+# Added random luck to battle and fixed bugs
+
+
 from os import system, name 
 from time import sleep
 from random import randint
