@@ -36,6 +36,10 @@ inv = [
     Item("Empty", 0, 0),
     Item("Empty", 0, 0)
 ]
+equipHands = Item("Empty", 0, 0)
+equipHead = Item("Empty", 0, 0)
+equipBody = Item("Empty", 0, 0)
+selected = Item("Empty", 0, 0)
 store = [
     Item("Empty", 0, 0),
     Item("Empty", 0, 0),
@@ -223,12 +227,6 @@ adjList = [
     'Putrid',
     'Hilarious',
 ]
-
-equipHands = Item("Empty", 0, 0)
-equipHead = Item("Empty", 0, 0)
-equipBody = Item("Empty", 0, 0)
-selected = Item("Empty", 0, 0)
-
 
 def pause():
     input("Press <ENTER> to return")
@@ -481,17 +479,17 @@ def sell():
         if (confirm == "yes" or confirm == "y"):
             item = slot
             if (item == "hand" or item == "hands"):
-                gold += equipHands.strength*3
+                gold += equipHands.strength*2
                 equipHands = Item("Empty", 0, 0)
             elif (item == "body"):
-                gold += equipBody.strength*3
+                gold += equipBody.strength*2
                 equipBody = Item("Empty", 0, 0)
             elif (item == "head"):
-                gold += equipHead.strength*3
+                gold += equipHead.strength*2
                 equipHead = Item("Empty", 0, 0)
             else:
                 slot = int(item)-1
-                gold += inv[slot].strength*3
+                gold += inv[slot].strength*2
                 inv[slot] = Item("Empty", 0, 0)
         elif (confirm == "no" or confirm == "n"):
             print("")
@@ -499,13 +497,12 @@ def sell():
             print("please type yes or no")
             sleep(1)
         sell()
-
 def buy():
     global gold
     global inv
     clear()
     print("Here is what we have in stock.")
-    print("your gold -- " + str(gold))
+    print(ORANGE + "your gold -- " + str(gold) + END)
     print("1 -- " + store[0].name + "    strength -- " + str(store[0].strength) + ORANGE + "  Price -- " + str(round(store[0].strength*3.2)) + END)
     print("2 -- " + store[1].name + "    strength -- " + str(store[1].strength) + ORANGE + "  Price -- " + str(round(store[1].strength*3.2)) + END)
     print("3 -- " + store[2].name + "    strength -- " + str(store[2].strength) + ORANGE + "  Price -- " + str(round(store[2].strength*3.2)) + END)
@@ -623,7 +620,7 @@ def newRoom():
     if (enc <= 7):
         encounter = 1
         print(RED)
-        print("you ran into a creature")
+        print("you ran into a monster")
         print(END)
     sleep(1)
     
@@ -635,15 +632,21 @@ def battle():
     global inv
     global health
     clear()
-    atk = equipHands.strength
     deff = equipBody.strength + equipHead.strength
-    monAtk = randint(10*lvl, 16*lvl)
     monDeff = randint(5*lvl, 9*lvl)
     monHealth = 20
-    srtHealth = health
+    startHealth = health
     monster = 1
 
     while(monster == 1):
+        atk = equipHands.strength
+        luck = randint(1,10)
+        if(luck == 1):
+            atk = 0
+            print(RED + "Miss" + END)
+        elif(luck == 10):
+            atk = atk*2
+            print(GREEN + "Critical hit" + END)
         print("you attacked with " + str(atk) + " Damage.")
         print("The monster blocked " + str(monDeff) + " Damage.")
         cng = atk - monDeff
@@ -654,6 +657,15 @@ def battle():
         if(monHealth <= 0):
             monster = 0
             break
+
+        monAtk = randint(10*lvl, 16*lvl)
+        monLuck = randint(1,10)
+        if(monLuck == 1):
+            monAtk = 0
+            print(GREEN + "The monster missed" + END)
+        elif(monLuck == 10):
+            monAtk = monAtk*2
+            print(RED + "The monster got a critical hit" + END)
         print("The monster attacked with " + str(monAtk) + " Damage.")
         print("you blocked " + str(deff) + " Damage.")
         cng = monAtk - deff
@@ -663,7 +675,7 @@ def battle():
         sleep(0.3)
         if(health <= 0):
             break
-        if(monHealth == 20 and health == starthealth):
+        if(monHealth == 20 and health == startHealth):
             monster = 3
             break
     clear()
@@ -696,6 +708,7 @@ def battle():
         sleep(1)
     elif(monster == 1):
         print(RED + "YOU DIED" + END)
+        print("Better hobble to the portal back to town.")
     elif(monster == 3):
         encounter += -1
         print(RED + "Locked in combat, neither of you could do any damage" + END)
