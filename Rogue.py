@@ -2,10 +2,11 @@
 # Enjoy
 # 
 # 
-# V0.2
+# V0.3
 # RELEASES--
-# Inital Beta
-# Added random luck to battle and fixed bugs
+# 0.1 - Inital Beta
+# 0.2 - Added random luck to battle and fixed bugs
+# 0.3 - Added Quest system and balenced skill
 
 
 from os import system, name 
@@ -27,6 +28,7 @@ game = 1
 floor = 0
 maxFloor = 0
 encounter = 0
+questEncounter = 0
 
 #charater propertys
 lvl = 1
@@ -37,7 +39,13 @@ class Item:
         self.name = name
         self.strength = strength
         self.type = type
-        
+
+class Quest:
+    def __init__(self, title, floor, gold):
+        self.title = title
+        self.floor = floor
+        self.gold = gold
+
 inv = [
     Item("Rookie Sword", 10, 1),
     Item("Rookie Bow", 7, 6),
@@ -49,7 +57,10 @@ inv = [
 equipHands = Item("Empty", 0, 0)
 equipHead = Item("Empty", 0, 0)
 equipBody = Item("Empty", 0, 0)
+
+userQuest = Quest("Empty", 0, 0)
 selected = Item("Empty", 0, 0)
+
 store = [
     Item("Empty", 0, 0),
     Item("Empty", 0, 0),
@@ -237,6 +248,205 @@ adjList = [
     'Putrid',
     'Hilarious',
 ]
+nameList = [
+    'Lydan',
+    'Syrin',
+    'Ptorik',
+    'Joz',
+    'Varog',
+    'Gethrod',
+    'Hezra',
+    'Feron',
+    'Ophni',
+    'Colborn',
+    'Fintis',
+    'Gatlin',
+    'Jinto',
+    'Hagalbar',
+    'Krinn',
+    'Lenox',
+    'Revvyn',
+    'Hodus',
+    'Dimian',
+    'Paskel',
+    'Kontas',
+    'Weston',
+    'Azamarr', 
+    'Jather',
+    'Tekren',
+    'Jareth',
+    'Adon',
+    'Zaden',
+    'Eune',
+    'Graff',
+    'Tez',
+    'Jessop',
+    'Gunnar',
+    'Pike',
+    'Domnhar',
+    'Baske',
+    'Jerrick',
+    'Mavrek',
+    'Riordan',
+    'Wulfe',
+    'Straus',
+    'Tyvrik ',
+    'Henndar',
+    'Favroe',
+    'Whit',
+    'Jaris',
+    'Renham',
+    'Kagran',
+    'Lassrin', 
+    'Vadim',
+    'Arlo',
+    'Quintis',
+    'Vale',
+    'Caelan',
+    'Yorjan',
+    'Khron',
+    'Jakrin',
+    'Fangar',
+    'Roux',
+    'Baxar',
+    'Hawke',
+    'Gatlen',
+    'Barak',
+    'Nazim',
+    'Kadric',
+    'Paquin',
+    'Kent',
+    'Moki',
+    'Rankar',
+    'Lothe',
+    'Ryven',
+    'Clawsen',
+    'Pakker',
+    'Embre',
+    'Cassian',
+    'Verssek',
+    'Dagfinn',
+    'Ebraheim',
+    'Nesso',
+    'Eldermar',
+    'Rivik',
+    'Rourke',
+    'Barton',
+    'Hemm',
+    'Sarkin',
+    'Blaiz', 
+    'Talon',
+    'Agro',
+    'Zagaroth',
+    'Turrek',
+    'Esdel',
+    'Lustros',
+    'Zenner',
+    'Baashar', 
+    'Dagrod',
+    'Gentar',
+    'Feston',
+    'Syrana',
+    'Resha',
+    'Varin',
+    'Wren',
+    'Yuni',
+    'Talis',
+    'Kessa',
+    'Magaltie',
+    'Aeris',
+    'Desmina',
+    'Krynna',
+    'Asralyn',
+    'Herra',
+    'Pret',
+    'Kory',
+    'Afia',
+    'Tessel',
+    'Rhiannon',
+    'Zara',
+    'Jesi',
+    'Belen',
+    'Rei',
+    'Ciscra',
+    'Temy',
+    'Renalee', 
+    'Estyn',
+    'Maarika',
+    'Lynorr',
+    'Tiv',
+    'Annihya',
+    'Semet',
+    'Tamrin',
+    'Antia',
+    'Reslyn',
+    'Basak',
+    'Vixra',
+    'Pekka',
+    'Xavia',
+    'Beatha', 
+    'Yarri',
+    'Liris',
+    'Sonali',
+    'Razra',
+    'Soko',
+    'Maeve',
+    'Everen',
+    'Yelina',
+    'Morwena',
+    'Hagar',
+    'Palra',
+    'Elysa',
+    'Sage',
+    'Ketra',
+    'Lynx',
+    'Agama',
+    'Thesra', 
+    'Tezani',
+    'Ralia',
+    'Esmee',
+    'Heron',
+    'Naima',
+    'Rydna ',
+    'Sparrow',
+    'Baakshi',
+    'Ibera',
+    'Phlox',
+    'Dessa',
+    'Braithe',
+    'Taewen',
+    'Larke',
+    'Silene',
+    'Phressa',
+    'Esther',
+    'Anika',
+    'Rasy',
+    'Harper',
+    'Indie',
+    'Vita',
+    'Drusila',
+    'Minha',
+    'Surane',
+    'Lassona',
+    'Merula',
+    'Kye',
+    'Jonna',
+    'Lyla',
+    'Zet',
+    'Orett',
+    'Raphtalia',
+    'Turi',
+    'Rhays',
+    'Shike',
+    'Hartie',
+    'Beela',
+    'Leska',
+    'Vemery', 
+    'Lunex',
+    'Fidess',
+    'Tisette',
+    'Partha'
+]
 
 def pause():
     input("Press <ENTER> to return")
@@ -305,7 +515,6 @@ def inventory():
         
     elif (user == "return"):
         print(END)
-        sleep(1)
     else:
         print(RED + "please use one of the commands listed" + END)
         sleep(1.5)
@@ -431,14 +640,56 @@ def help():
         print('Type "Onward" to enter the dungeon')
         if(len(tp) > 0):
             print('teleport to a floor you have been to before by typeing "TP".')
+        if(lvl >= 2):
+            print('you can find new quests by typeing in "Quest".')
     else:
         print('Type "I" to access inventory')
         print('Type "Town" to return to town at any time. but it is a one way trip')
         print('There are teleports every 10 floors. but they can only be activated from the inside')
         print('Move forward by typeing "onward"')
         print('You can only move forward if you have completd all of the encounters for the area.')
+        if(lvl>= 2):
+            print('you can look at your active quest with "quest".')
     print(END)
     sleep(1)
+
+def quest(title, floor, reward):
+    clear()
+    global userQuest
+    if(town == 0):
+        if(userQuest.floor == 0):
+            clear()
+            print(RED + "You do not currently have a quest" + END)
+            sleep(2)
+            clear()
+        else:
+            clear()
+            print(userQuest.title)
+            print("Floor - " + str(userQuest.floor))
+            print(ORANGE + "Reward - " + str(userQuest.gold) + END)
+            print(PURPLE)
+            pause()
+            print(END)
+            clear()
+    if(town == 1):
+        print("I have a new quest for you today")
+        print()
+        print("On floor " + str(floor) + " of the dungeon there is a monster named " + title)
+        print("If you can kill him you will be rewarded " + str(reward) + " gold.")
+        
+
+        print("Would you like to take on the quest?")
+        confirm = input(GREEN + "--->> " + END).lower()
+        if (confirm == "yes" or confirm == "y"):
+            userQuest = Quest(title, floor, reward)
+            clear()
+        elif (confirm == "no" or confirm == "n"):
+            print("")
+            clear()
+        else:
+            print("please type yes or no")
+            sleep(1)
+            quest(title, floor, reward)
 
 #shop functions
 def shop():
@@ -513,12 +764,12 @@ def buy():
     clear()
     print("Here is what we have in stock.")
     print(ORANGE + "your gold -- " + str(gold) + END)
-    print("1 -- " + store[0].name + "    strength -- " + str(store[0].strength) + ORANGE + "  Price -- " + str(round(store[0].strength*3.2)) + END)
-    print("2 -- " + store[1].name + "    strength -- " + str(store[1].strength) + ORANGE + "  Price -- " + str(round(store[1].strength*3.2)) + END)
-    print("3 -- " + store[2].name + "    strength -- " + str(store[2].strength) + ORANGE + "  Price -- " + str(round(store[2].strength*3.2)) + END)
-    print("4 -- " + store[3].name + "    strength -- " + str(store[3].strength) + ORANGE + "  Price -- " + str(round(store[3].strength*3.2)) + END)
-    print("5 -- " + store[4].name + "    strength -- " + str(store[4].strength) + ORANGE + "  Price -- " + str(round(store[4].strength*3.2)) + END)
-    print("6 -- " + store[5].name + "    strength -- " + str(store[5].strength) + ORANGE + "  Price -- " + str(round(store[5].strength*3.2)) + END)
+    print("1 -- " + store[0].name + "    strength -- " + str(store[0].strength) + ORANGE + "  Price -- " + str(round(store[0].strength*2.2)) + END)
+    print("2 -- " + store[1].name + "    strength -- " + str(store[1].strength) + ORANGE + "  Price -- " + str(round(store[1].strength*2.2)) + END)
+    print("3 -- " + store[2].name + "    strength -- " + str(store[2].strength) + ORANGE + "  Price -- " + str(round(store[2].strength*2.2)) + END)
+    print("4 -- " + store[3].name + "    strength -- " + str(store[3].strength) + ORANGE + "  Price -- " + str(round(store[3].strength*2.2)) + END)
+    print("5 -- " + store[4].name + "    strength -- " + str(store[4].strength) + ORANGE + "  Price -- " + str(round(store[4].strength*2.2)) + END)
+    print("6 -- " + store[5].name + "    strength -- " + str(store[5].strength) + ORANGE + "  Price -- " + str(round(store[5].strength*2.2)) + END)
 
     item = input(PURPLE + "Witch item to buy? (return to go back) -- " + END).lower()
     if (item != "1" and item != "2" and item != "3" and item != "4" and item != "5" and item != "6" and item != "return"):
@@ -559,7 +810,7 @@ def findOpen():
     return slot
     
 def mkItem():
-    adj = randint(0, len(adjList))
+    adj = randint(0, len(adjList)-1)
     typenum = randint(1, 20)
     if(typenum == 1):
         type = " Sword"
@@ -612,6 +863,7 @@ mkStore()
 
 def newRoom():
     global encounter
+    global questEncounter
     global maxFloor
     global floor
     global lvl
@@ -619,6 +871,8 @@ def newRoom():
     clear()
     if(floor > maxFloor):
         maxFloor = floor
+        if(maxFloor == 6):
+            print(BLUE + "New quests are avalable in town!" + END)
         if(maxFloor % 6 == 0):
             lvl += 1
         if(maxFloor % 10 == 0):
@@ -626,27 +880,38 @@ def newRoom():
             print(BLUE + "You found a teleporter on this floor!" + END)
 
     print("Welcome to floor " + str(floor) + ". You are on level " + str(lvl) + ".")
+    if(floor == userQuest.floor):
+        questEncounter = 1
+        encounter +=1
+        print()
+        print(RED + "You found " + userQuest.title + "." + END)
     enc = randint(0,10)
     if (enc <= 7):
-        encounter = 1
+        encounter += 1
         print(RED)
         print("you ran into a monster")
         print(END)
     sleep(1)
     
-
 #icoperate death
 def battle():
     global encounter
+    global questEncounter
+    global userQuest
     global gold
     global inv
     global health
     clear()
     deff = equipBody.strength + equipHead.strength
+    monsterName = ""
     monDeff = randint(5*lvl, 9*lvl)
     monHealth = 20
     startHealth = health
     monster = 1
+    if(questEncounter == 1):
+        monsterName = userQuest.title
+    else:
+        monsterName = "The monster"
 
     while(monster == 1):
         atk = equipHands.strength
@@ -658,7 +923,7 @@ def battle():
             atk = atk*2
             print(GREEN + "Critical hit" + END)
         print("you attacked with " + str(atk) + " Damage.")
-        print("The monster blocked " + str(monDeff) + " Damage.")
+        print(monsterName + " blocked " + str(monDeff) + " Damage.")
         cng = atk - monDeff
         if(cng > 0):
             monHealth -= cng
@@ -668,15 +933,15 @@ def battle():
             monster = 0
             break
 
-        monAtk = randint(10*lvl, 16*lvl)
+        monAtk = randint(10*lvl, 20*lvl)
         monLuck = randint(1,10)
         if(monLuck == 1):
             monAtk = 0
-            print(GREEN + "The monster missed" + END)
+            print(GREEN + monsterName + " missed" + END)
         elif(monLuck == 10):
             monAtk = monAtk*2
-            print(RED + "The monster got a critical hit" + END)
-        print("The monster attacked with " + str(monAtk) + " Damage.")
+            print(RED + monsterName + " got a critical hit" + END)
+        print(monsterName + " attacked with " + str(monAtk) + " Damage.")
         print("you blocked " + str(deff) + " Damage.")
         cng = monAtk - deff
         if(cng > 0):
@@ -693,27 +958,56 @@ def battle():
     if(monster == 0):
         encounter += -1
         print(GREEN + "YOU WIN" + END)
-        gold += round(monDeff/2)
-        print("you found an item, Pick it up?")
-        check = 0
-        while(check == 0):
-            confirm = input("--->> ").lower()
-            if (confirm == "yes" or confirm == "y"):
-                check = 1
-                slot = findOpen()
-                if(slot == 6):
-                    print(RED + "Sorry, but you don't have any free inventory to pick it up" + END)
-                    sleep(2)
+        if(questEncounter == 1):
+            questEncounter = 0
+            gold += userQuest.gold
+            print("Would you like to take " + userQuest.title + "'s equipment?")
+            check = 0
+            while(check == 0):
+                confirm = input("--->> ").lower()
+                if (confirm == "yes" or confirm == "y"):
+                    check = 1
+                    slot = findOpen()
+                    if(slot == 6):
+                        print(RED + "Sorry, but you don't have any free inventory to pick it up" + END)
+                        sleep(2)
+                        clear()
+                        userQuest = Quest("Empty", 0, 0)
+                    else:
+                        inv[slot] = mkItem()
+                        inv[slot].name = inv[slot].name + " of " + userQuest.title
+                        inv[slot].strength = round(inv[slot].strength*1.3)
+                        userQuest = Quest("Empty", 0, 0)
+                        clear()
+                elif (confirm == "no" or confirm == "n"):
                     clear()
+                    check = 1
+                    userQuest = Quest("Empty", 0, 0)
                 else:
-                    inv[slot] = mkItem()
+                    print(RED + "please type yes or no" + END)
+                    sleep(1)
+        else:
+            gold += round(monDeff/2)
+            print("you found an item, Pick it up?")
+            check = 0
+            while(check == 0):
+                confirm = input("--->> ").lower()
+                if (confirm == "yes" or confirm == "y"):
+                    check = 1
+                    slot = findOpen()
+                    if(slot == 6):
+                        print(RED + "Sorry, but you don't have any free inventory to pick it up" + END)
+                        sleep(2)
+                        clear()
+                    else:
+                        inv[slot] = mkItem()
+                        clear()
+                elif (confirm == "no" or confirm == "n"):
                     clear()
-            elif (confirm == "no" or confirm == "n"):
-                print("")
-                check = 1
-            else:
-                print(RED + "please type yes or no" + END)
-                sleep(1)
+                    check = 1
+                else:
+                    print(RED + "please type yes or no" + END)
+                    sleep(1)
         
         sleep(1)
     elif(monster == 1):
@@ -737,6 +1031,7 @@ while game == 1:
         if (user == "i"):
             inventory()
         elif (user == "onward" or user == "onwards"):
+            floor = 0
             town = 0
             newRoom()
         elif (user == "shop"):
@@ -765,6 +1060,22 @@ while game == 1:
                     print(RED + 'invalid option, type "help" for options' + END)
                     sleep(2)
                     clear()
+        elif (user == "quest"):
+            if(lvl >= 2):
+                if(userQuest.floor == 0):
+                    title = nameList[randint(0,len(nameList)-1)] + " The " + adjList[randint(0,len(adjList)-1)]
+                    floor = randint((lvl-1)*6, lvl*6)
+                    reward = randint(lvl*20, lvl*30)
+                    quest(title, floor, reward)
+                else:
+                    print(RED + "You allready have a quest, finish that one before you get a new one" + END)
+                    sleep(2)
+                    clear()
+            else:
+                print(RED + "We don't have any quests right now, try going further down in the dungeon" + END)
+                sleep(2)
+                clear()
+
         elif (user == "help"):
             help()
         elif (user == "exit" or user == "quit"):
@@ -796,13 +1107,15 @@ while game == 1:
                 sleep(2)
                 clear()
         elif (user == "fight" or user == "battle"):
-            if (encounter >= 1):
+            if (encounter >= 1 or questEncounter == 1):
                 battle()
             else:
                 print(RED + "you can't fight something that's not there" + END)
                 sleep(1)
                 clear()
-                
+        elif (user == "quest"):
+            quest('0', 0, 0)
+
         elif (user == "help"):
             help()
         elif (user == "town"):
@@ -812,6 +1125,7 @@ while game == 1:
                 town = 1
                 mkStore()
                 encounter = 0
+                questEncounter = 0
                 floor = 0
                 clear()
             elif (confirm == "no" or confirm == "n"):
@@ -819,6 +1133,7 @@ while game == 1:
             else:
                 print("please type yes or no")
                 sleep(1)
+                clear()
         else:
             print(RED + 'invalid option, type "help" for options' + END)
             sleep(2)
