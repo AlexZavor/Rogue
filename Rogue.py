@@ -2,12 +2,13 @@
 # Enjoy
 # 
 # 
-# V0.3
+# V0.4
+# 
 # RELEASES--
 # 0.1 - Inital Beta
 # 0.2 - Added random luck to battle and fixed bugs
 # 0.3 - Added Quest system and balenced skill
-
+# 0.4 - Multiple helpful additions and more information displayed
 
 from os import system, name 
 from time import sleep
@@ -474,18 +475,22 @@ def clear():
 #inventory function
 def inventory():
     clear()
-    print("this is your inventory")
-    print("Slot 1 --- " + inv[0].name)
-    print("Slot 2 --- " + inv[1].name)
-    print("Slot 3 --- " + inv[2].name)
-    print("Slot 4 --- " + inv[3].name)
-    print("Slot 5 --- " + inv[4].name)
-    print("Slot 6 --- " + inv[5].name)
+    print()
+    print(PURPLE + "Total Attack -- "+ str(equipHands.strength) +"        Total Defence -- " + str(equipBody.strength + equipHead.strength) + END)
+    print("          This is your inventory")
+    print()
+    print()
+    print("Slot "+GREEN+"1"+END+"  --- " + inv[0].name + "        Strength --- " + str(inv[0].strength) )
+    print("Slot "+GREEN+"2"+END+"  --- " + inv[1].name + "        Strength --- " + str(inv[1].strength) )
+    print("Slot "+GREEN+"3"+END+"  --- " + inv[2].name + "        Strength --- " + str(inv[2].strength) )
+    print("Slot "+GREEN+"4"+END+"  --- " + inv[3].name + "        Strength --- " + str(inv[3].strength) )
+    print("Slot "+GREEN+"5"+END+"  --- " + inv[4].name + "        Strength --- " + str(inv[4].strength) )
+    print("Slot "+GREEN+"6"+END+"  --- " + inv[5].name + "        Strength --- " + str(inv[5].strength) )
     print()
     
-    print("Equiped in hands --- " + equipHands.name)
-    print("Equiped on head  --- " + equipHead.name)
-    print("Equiped on Body  --- " + equipBody.name)
+    print("Equiped in "+GREEN+"hands"+END+"  --- " + equipHands.name + "        Strength --- " + str(equipHands.strength) )
+    print("Equiped on "+GREEN+"head"+END+"   --- " + equipHead.name + "        Strength --- " + str(equipHead.strength) )
+    print("Equiped on "+GREEN+"Body"+END+"   --- " + equipBody.name + "        Strength --- " + str(equipBody.strength) )
     
     user = input(GREEN + "View, Compare, Scrap, Equip, Return -- ").lower()
     if (user == "view" or user == "compare" or user == "scrap" or user == "equip"):
@@ -493,7 +498,7 @@ def inventory():
         print(END)
 
         if (slot != "1" and slot != "2" and slot != "3" and slot != "4" and slot != "5" and slot != "6" and slot != "head" and slot != "hand" and slot != "hands" and slot != "body"):
-            print(RED + "Sorry, I dont understand "+'make sure to type the number of the slot, or where it is equiped as "head" "hands" or "body"' + END)
+            print(RED + "Sorry, I don't understand "+'make sure to type the number of the slot, or where it is equiped as "head" "hands" or "body"' + END)
             sleep(3)
             inventory()
 
@@ -540,17 +545,17 @@ def viewEQItem(item):
     inventory()
 def compare(slot1):
     clear()
-    print("Slot 1 --- " + inv[0].name)
-    print("Slot 2 --- " + inv[1].name)
-    print("Slot 3 --- " + inv[2].name)
-    print("Slot 4 --- " + inv[3].name)
-    print("Slot 5 --- " + inv[4].name)
-    print("Slot 6 --- " + inv[5].name)
+    print("Slot "+GREEN+"1"+END+" --- " + inv[0].name)
+    print("Slot "+GREEN+"2"+END+" --- " + inv[1].name)
+    print("Slot "+GREEN+"3"+END+" --- " + inv[2].name)
+    print("Slot "+GREEN+"4"+END+" --- " + inv[3].name)
+    print("Slot "+GREEN+"5"+END+" --- " + inv[4].name)
+    print("Slot "+GREEN+"6"+END+" --- " + inv[5].name)
     print()
     
-    print("Equiped in hands --- " + equipHands.name)
-    print("Equiped on head  --- " + equipHead.name)
-    print("Equiped on Body  --- " + equipBody.name)
+    print("Equiped in "+GREEN+"hands"+END+" --- " + equipHands.name)
+    print("Equiped on "+GREEN+"head"+END+"  --- " + equipHead.name)
+    print("Equiped on "+GREEN+"Body"+END+"  --- " + equipBody.name)
     
     slot2 = input(GREEN + "Compare to what? -- " + END).lower()
     print(END)
@@ -647,6 +652,7 @@ def help():
         print('Type "Town" to return to town at any time. but it is a one way trip')
         print('There are teleports every 10 floors. but they can only be activated from the inside')
         print('Move forward by typeing "onward"')
+        print('Take on monsters by typeing "battle" or "fight"')
         print('You can only move forward if you have completd all of the encounters for the area.')
         if(lvl>= 2):
             print('you can look at your active quest with "quest".')
@@ -699,9 +705,9 @@ def shop():
     print("Welcome to the store! would you like to buy or sell today?")
     user = input(GREEN + "Buy, Sell, Return -- ").lower()
     print(END)
-    if (user == "buy"):
+    if (user == "buy" or user == 'b'):
         buy()
-    elif (user == "sell"):
+    elif (user == "sell" or user == 's'):
         sell()
     elif (user == "return"):
         print("")
@@ -718,18 +724,19 @@ def sell():
     global equipHead
     global equipBody
     clear()
-    print("Slot 1 --- " + inv[0].name)
-    print("Slot 2 --- " + inv[1].name)
-    print("Slot 3 --- " + inv[2].name)
-    print("Slot 4 --- " + inv[3].name)
-    print("Slot 5 --- " + inv[4].name)
-    print("Slot 6 --- " + inv[5].name)
+    print(ORANGE + "gold - " + str(gold) + END)
+    print("Slot "+GREEN+"1"+END+" --- " + inv[0].name)
+    print("Slot "+GREEN+"2"+END+"  --- " + inv[1].name)
+    print("Slot "+GREEN+"3"+END+"  --- " + inv[2].name)
+    print("Slot "+GREEN+"4"+END+"  --- " + inv[3].name)
+    print("Slot "+GREEN+"5"+END+"  --- " + inv[4].name)
+    print("Slot "+GREEN+"6"+END+"  --- " + inv[5].name)
     print()
-    print("Equiped in hands --- " + equipHands.name)
-    print("Equiped on head --- " + equipHead.name)
-    print("Equiped on Body --- " + equipBody.name)
+    print("Equiped in "+GREEN+"hands"+END+"  --- " + equipHands.name)
+    print("Equiped on "+GREEN+"head"+END+"  --- " + equipHead.name)
+    print("Equiped on "+GREEN+"Body"+END+"  --- " + equipBody.name)
     
-    slot = input(PURPLE + "Witch slot or where equiped? (return to go back) -- " + END).lower()
+    slot = input(PURPLE + 'Witch slot or where equiped? (type "return" to go back) -- ' + END).lower()
     if (slot != "1" and slot != "2" and slot != "3" and slot != "4" and slot != "5" and slot != "6" and slot != "head" and slot != "hand" and slot != "hands" and slot != "body" and slot != "return"):
         print(RED + "Sorry, I dont understand "+'make sure to type the number of the slot, or where it is equiped as "head" "hands" or "body"' + END)
         sleep(3)        
@@ -741,17 +748,25 @@ def sell():
             item = slot
             if (item == "hand" or item == "hands"):
                 gold += equipHands.strength*2
+                print(GREEN + "sold for " + str(equipHands.strength*2) + " gold" + END)
                 equipHands = Item("Empty", 0, 0)
+                sleep(1)
             elif (item == "body"):
                 gold += equipBody.strength*2
+                print(GREEN + "sold for " + str(equipBody.strength*2) + " gold" + END)
                 equipBody = Item("Empty", 0, 0)
+                sleep(1)
             elif (item == "head"):
                 gold += equipHead.strength*2
+                print(GREEN + "sold for " + str(equipHead.strength*2) + " gold" + END)
                 equipHead = Item("Empty", 0, 0)
+                sleep(1)
             else:
                 slot = int(item)-1
                 gold += inv[slot].strength*2
+                print(GREEN + "sold for " + str(inv[slot].strength*2) + " gold" + END)
                 inv[slot] = Item("Empty", 0, 0)
+                sleep(1)
         elif (confirm == "no" or confirm == "n"):
             print("")
         else:
@@ -771,7 +786,7 @@ def buy():
     print("5 -- " + store[4].name + "    strength -- " + str(store[4].strength) + ORANGE + "  Price -- " + str(round(store[4].strength*2.2)) + END)
     print("6 -- " + store[5].name + "    strength -- " + str(store[5].strength) + ORANGE + "  Price -- " + str(round(store[5].strength*2.2)) + END)
 
-    item = input(PURPLE + "Witch item to buy? (return to go back) -- " + END).lower()
+    item = input(PURPLE + 'Witch item to buy? (type "return" to go back) -- ' + END).lower()
     if (item != "1" and item != "2" and item != "3" and item != "4" and item != "5" and item != "6" and item != "return"):
         print(RED + "Sorry, I don't understand, "+'make sure to type the number of the item.' + END)
         sleep(3)        
@@ -785,8 +800,8 @@ def buy():
                 print(RED + "Sorry, but you don't have any free inventory to buy that" + END)
                 sleep(2)
             else:
-                if(gold >= round(store[int(item)-1].strength*3.2)):
-                    gold -= round(store[int(item)-1].strength*3.2)
+                if(gold >= round(store[int(item)-1].strength*2.2)):
+                    gold -= round(store[int(item)-1].strength*2.2)
                     inv[slot], store[int(item)-1] = store[int(item)-1], inv[slot]
                 else:
                     print(RED + "Sorry, but you don't have enough gold for that" + END)
@@ -879,7 +894,7 @@ def newRoom():
             tp.append(str(maxFloor))
             print(BLUE + "You found a teleporter on this floor!" + END)
 
-    print("Welcome to floor " + str(floor) + ". You are on level " + str(lvl) + ".")
+    print("Welcome to floor " + str(floor) + ". You are level " + str(lvl) + ".")
     if(floor == userQuest.floor):
         questEncounter = 1
         encounter +=1
@@ -928,7 +943,7 @@ def battle():
         if(cng > 0):
             monHealth -= cng
         print(GREEN + "Your health: " + str(health) + RED + "     Monster health: " + str(monHealth) + END)
-        sleep(0.3)
+        sleep(0.5)
         if(monHealth <= 0):
             monster = 0
             break
@@ -947,12 +962,15 @@ def battle():
         if(cng > 0):
             health -= cng
         print(GREEN + "Your health: " + str(health) + RED + "      Monster health: " + str(monHealth) + END)
-        sleep(0.3)
+        sleep(0.5)
         if(health <= 0):
             break
         if(monHealth == 20 and health == startHealth):
             monster = 3
             break
+    print(PURPLE)
+    pause()
+    print(END)
     clear()
     print(GREEN + "Your health: " + str(health))
     if(monster == 0):
@@ -1002,6 +1020,7 @@ def battle():
                     else:
                         inv[slot] = mkItem()
                         clear()
+                        print(GREEN + "You picked up a " + inv[slot].name + " with a strength of " + str(inv[slot].strength) + END )
                 elif (confirm == "no" or confirm == "n"):
                     clear()
                     check = 1
@@ -1012,7 +1031,7 @@ def battle():
         sleep(1)
     elif(monster == 1):
         print(RED + "YOU DIED" + END)
-        print("Better hobble to the portal back to town.")
+        print("Better hobble to a portal back to town.")
     elif(monster == 3):
         encounter += -1
         print(RED + "Locked in combat, neither of you could do any damage" + END)
@@ -1023,7 +1042,7 @@ while game == 1:
     #in town
     if (town == 1):
         health = 50
-        print(ORANGE + "Gold - " +str(gold) + RED + "  Max Depth - " + str(maxFloor) + END)
+        print(ORANGE + "Gold - " +str(gold) + RED + "  Max Depth - " + str(maxFloor) + GREEN + "  Health - " + str(health) + END)
         print(GREEN)
         user = input("--->>").lower()
         print(END)
@@ -1102,6 +1121,9 @@ while game == 1:
         elif (user == "onward" or user == "onwards"):
             if (encounter == 0):
                 newRoom()
+                health += 2
+                if(health >= 50):
+                    health = 50
             else:
                 print(RED + "you cant leave a room until you finish all encounters" + END)
                 sleep(2)
@@ -1119,21 +1141,29 @@ while game == 1:
         elif (user == "help"):
             help()
         elif (user == "town"):
-            print("Are you sure you want to return to town? it is a one way portal. Y/N")
-            confirm = input("--->> ").lower()
-            if (confirm == "yes" or confirm == "y"):
+            if(health <= 0):
                 town = 1
                 mkStore()
                 encounter = 0
                 questEncounter = 0
                 floor = 0
                 clear()
-            elif (confirm == "no" or confirm == "n"):
-                clear()
             else:
-                print("please type yes or no")
-                sleep(1)
-                clear()
+                print("Are you sure you want to return to town? it is a one way portal. Y/N")
+                confirm = input("--->> ").lower()
+                if (confirm == "yes" or confirm == "y"):
+                    town = 1
+                    mkStore()
+                    encounter = 0
+                    questEncounter = 0
+                    floor = 0
+                    clear()
+                elif (confirm == "no" or confirm == "n"):
+                    clear()
+                else:
+                    print("please type yes or no")
+                    sleep(1)
+                    clear()
         else:
             print(RED + 'invalid option, type "help" for options' + END)
             sleep(2)
