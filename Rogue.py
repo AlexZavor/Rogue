@@ -2,13 +2,14 @@
 # Enjoy
 # 
 # 
-# V0.4
+# V0.5
 # 
 # RELEASES--
 # 0.1 - Inital Beta
 # 0.2 - Added random luck to battle and fixed bugs
 # 0.3 - Added Quest system and balenced skill
 # 0.4 - Multiple helpful additions and more information displayed
+# 0.5 - Leveling out combat for fairness
 
 from os import system, name 
 from time import sleep
@@ -28,6 +29,7 @@ town = 1
 game = 1
 floor = 0
 maxFloor = 0
+maxHealth = 50
 encounter = 0
 questEncounter = 0
 
@@ -48,9 +50,9 @@ class Quest:
         self.gold = gold
 
 inv = [
-    Item("Rookie Sword", 10, 1),
-    Item("Rookie Bow", 7, 6),
-    Item("Rookie Armor", 10, 11),
+    Item("Rookie Sword", 9, 1),
+    Item("Rookie Helmet", 9, 16),
+    Item("Rookie Armor", 9, 11),
     Item("Empty", 0, 0),
     Item("Empty", 0, 0),
     Item("Empty", 0, 0)
@@ -491,7 +493,7 @@ def inventory():
     print("Equiped in "+GREEN+"hands"+END+"  --- " + equipHands.name + "        Strength --- " + str(equipHands.strength) )
     print("Equiped on "+GREEN+"head"+END+"   --- " + equipHead.name + "        Strength --- " + str(equipHead.strength) )
     print("Equiped on "+GREEN+"Body"+END+"   --- " + equipBody.name + "        Strength --- " + str(equipBody.strength) )
-    
+    print()
     user = input(GREEN + "View, Compare, Scrap, Equip, Return -- ").lower()
     if (user == "view" or user == "compare" or user == "scrap" or user == "equip"):
         slot = input("Witch slot or where equiped? -- " + END).lower()
@@ -556,7 +558,7 @@ def compare(slot1):
     print("Equiped in "+GREEN+"hands"+END+" --- " + equipHands.name)
     print("Equiped on "+GREEN+"head"+END+"  --- " + equipHead.name)
     print("Equiped on "+GREEN+"Body"+END+"  --- " + equipBody.name)
-    
+    print()
     slot2 = input(GREEN + "Compare to what? -- " + END).lower()
     print(END)
 
@@ -597,17 +599,17 @@ def scrap(item):
     confirm = input("--->> ").lower()
     if (confirm == "yes" or confirm == "y"):
         if (item == "hand" or item == "hands"):
-            gold += equipHands.strength
+            gold += equipHands.strength*.5
             equipHands = Item("Empty", 0, 0)
         elif (item == "body"):
-            gold += equipBody.strength
+            gold += equipBody.strength*.5
             equipBody = Item("Empty", 0, 0)
         elif (item == "head"):
-            gold += equipHead.strength
+            gold += equipHead.strength*.5
             equipHead = Item("Empty", 0, 0)
         else:
             slot = int(item)-1
-            gold += inv[slot].strength
+            gold += inv[slot].strength*.5
             inv[slot] = Item("Empty", 0, 0)
     elif (confirm == "no" or confirm == "n"):
         print("")
@@ -725,7 +727,7 @@ def sell():
     global equipBody
     clear()
     print(ORANGE + "gold - " + str(gold) + END)
-    print("Slot "+GREEN+"1"+END+" --- " + inv[0].name)
+    print("Slot "+GREEN+"1"+END+"  --- " + inv[0].name)
     print("Slot "+GREEN+"2"+END+"  --- " + inv[1].name)
     print("Slot "+GREEN+"3"+END+"  --- " + inv[2].name)
     print("Slot "+GREEN+"4"+END+"  --- " + inv[3].name)
@@ -735,6 +737,7 @@ def sell():
     print("Equiped in "+GREEN+"hands"+END+"  --- " + equipHands.name)
     print("Equiped on "+GREEN+"head"+END+"  --- " + equipHead.name)
     print("Equiped on "+GREEN+"Body"+END+"  --- " + equipBody.name)
+    print()
     
     slot = input(PURPLE + 'Witch slot or where equiped? (type "return" to go back) -- ' + END).lower()
     if (slot != "1" and slot != "2" and slot != "3" and slot != "4" and slot != "5" and slot != "6" and slot != "head" and slot != "hand" and slot != "hands" and slot != "body" and slot != "return"):
@@ -747,24 +750,24 @@ def sell():
         if (confirm == "yes" or confirm == "y"):
             item = slot
             if (item == "hand" or item == "hands"):
-                gold += equipHands.strength*2
-                print(GREEN + "sold for " + str(equipHands.strength*2) + " gold" + END)
+                gold += round(equipHands.strength*1.2)
+                print(GREEN + "sold for " + str(equipHands.strength) + " gold" + END)
                 equipHands = Item("Empty", 0, 0)
                 sleep(1)
             elif (item == "body"):
-                gold += equipBody.strength*2
-                print(GREEN + "sold for " + str(equipBody.strength*2) + " gold" + END)
+                gold += round(equipBody.strength*1.2)
+                print(GREEN + "sold for " + str(equipBody.strength) + " gold" + END)
                 equipBody = Item("Empty", 0, 0)
                 sleep(1)
             elif (item == "head"):
-                gold += equipHead.strength*2
-                print(GREEN + "sold for " + str(equipHead.strength*2) + " gold" + END)
+                gold += round(equipHead.strength*1.2)
+                print(GREEN + "sold for " + str(equipHead.strength) + " gold" + END)
                 equipHead = Item("Empty", 0, 0)
                 sleep(1)
             else:
                 slot = int(item)-1
-                gold += inv[slot].strength*2
-                print(GREEN + "sold for " + str(inv[slot].strength*2) + " gold" + END)
+                gold += round(inv[slot].strength*1.2)
+                print(GREEN + "sold for " + str(inv[slot].strength) + " gold" + END)
                 inv[slot] = Item("Empty", 0, 0)
                 sleep(1)
         elif (confirm == "no" or confirm == "n"):
@@ -779,17 +782,23 @@ def buy():
     clear()
     print("Here is what we have in stock.")
     print(ORANGE + "your gold -- " + str(gold) + END)
-    print("1 -- " + store[0].name + "    strength -- " + str(store[0].strength) + ORANGE + "  Price -- " + str(round(store[0].strength*2.2)) + END)
-    print("2 -- " + store[1].name + "    strength -- " + str(store[1].strength) + ORANGE + "  Price -- " + str(round(store[1].strength*2.2)) + END)
-    print("3 -- " + store[2].name + "    strength -- " + str(store[2].strength) + ORANGE + "  Price -- " + str(round(store[2].strength*2.2)) + END)
-    print("4 -- " + store[3].name + "    strength -- " + str(store[3].strength) + ORANGE + "  Price -- " + str(round(store[3].strength*2.2)) + END)
-    print("5 -- " + store[4].name + "    strength -- " + str(store[4].strength) + ORANGE + "  Price -- " + str(round(store[4].strength*2.2)) + END)
-    print("6 -- " + store[5].name + "    strength -- " + str(store[5].strength) + ORANGE + "  Price -- " + str(round(store[5].strength*2.2)) + END)
+    print("1 -- " + store[0].name + "    strength -- " + str(store[0].strength) + ORANGE + "  Price -- " + str(round(store[0].strength*2)) + END)
+    print("2 -- " + store[1].name + "    strength -- " + str(store[1].strength) + ORANGE + "  Price -- " + str(round(store[1].strength*2)) + END)
+    print("3 -- " + store[2].name + "    strength -- " + str(store[2].strength) + ORANGE + "  Price -- " + str(round(store[2].strength*2)) + END)
+    print("4 -- " + store[3].name + "    strength -- " + str(store[3].strength) + ORANGE + "  Price -- " + str(round(store[3].strength*2)) + END)
+    print("5 -- " + store[4].name + "    strength -- " + str(store[4].strength) + ORANGE + "  Price -- " + str(round(store[4].strength*2)) + END)
+    print("6 -- " + store[5].name + "    strength -- " + str(store[5].strength) + ORANGE + "  Price -- " + str(round(store[5].strength*2)) + END)
+    print()
+
+    print("Equiped in hands  --- " + equipHands.name + "        Strength --- " + str(equipHands.strength) )
+    print("Equiped on head  --- " + equipHead.name + "        Strength --- " + str(equipHead.strength) )
+    print("Equiped on Body  --- " + equipBody.name + "        Strength --- " + str(equipBody.strength) )
+    print()
 
     item = input(PURPLE + 'Witch item to buy? (type "return" to go back) -- ' + END).lower()
     if (item != "1" and item != "2" and item != "3" and item != "4" and item != "5" and item != "6" and item != "return"):
         print(RED + "Sorry, I don't understand, "+'make sure to type the number of the item.' + END)
-        sleep(3)        
+        sleep(2)        
         buy()
     elif (item != "return"):
         print("Are you sure? Y/N")
@@ -800,8 +809,8 @@ def buy():
                 print(RED + "Sorry, but you don't have any free inventory to buy that" + END)
                 sleep(2)
             else:
-                if(gold >= round(store[int(item)-1].strength*2.2)):
-                    gold -= round(store[int(item)-1].strength*2.2)
+                if(gold >= round(store[int(item)-1].strength*2)):
+                    gold -= round(store[int(item)-1].strength*2)
                     inv[slot], store[int(item)-1] = store[int(item)-1], inv[slot]
                 else:
                     print(RED + "Sorry, but you don't have enough gold for that" + END)
@@ -868,7 +877,7 @@ def mkItem():
     elif(typenum == 20):
         type = " Headware"
     name = adjList[adj] + type
-    strength = randint(7*lvl, 12*lvl)
+    strength = randint(8+maxFloor, 10+maxFloor) - randint(1,2)
     return Item(name, strength, typenum)
 def mkStore():
     x = 0
@@ -882,14 +891,17 @@ def newRoom():
     global maxFloor
     global floor
     global lvl
+    global maxHealth
     floor = floor+1
     clear()
     if(floor > maxFloor):
         maxFloor = floor
-        if(maxFloor == 6):
+        if(maxFloor == 7):
             print(BLUE + "New quests are avalable in town!" + END)
-        if(maxFloor % 6 == 0):
+        if(maxFloor % 7 == 0):
             lvl += 1
+            print(BLUE + "LEVEL UP!" + END)
+            maxHealth += 5
         if(maxFloor % 10 == 0):
             tp.append(str(maxFloor))
             print(BLUE + "You found a teleporter on this floor!" + END)
@@ -901,7 +913,7 @@ def newRoom():
         print()
         print(RED + "You found " + userQuest.title + "." + END)
     enc = randint(0,10)
-    if (enc <= 7):
+    if (enc <= 9):
         encounter += 1
         print(RED)
         print("you ran into a monster")
@@ -919,12 +931,14 @@ def battle():
     clear()
     deff = equipBody.strength + equipHead.strength
     monsterName = ""
-    monDeff = randint(5*lvl, 9*lvl)
+    monDeff = randint(6+floor, 8+floor)
     monHealth = 20
     startHealth = health
     monster = 1
     if(questEncounter == 1):
         monsterName = userQuest.title
+        monDeff = round(monDeff*1.2) 
+        monHealth = 40
     else:
         monsterName = "The monster"
 
@@ -934,35 +948,35 @@ def battle():
         if(luck == 1):
             atk = 0
             print(RED + "Miss" + END)
-        elif(luck == 10):
-            atk = atk*2
+        elif(luck >= 9):
+            atk = atk+(5*lvl)
             print(GREEN + "Critical hit" + END)
-        print("you attacked with " + str(atk) + " Damage.")
+        print("player attack: " + str(atk) + " Damage.")
         print(monsterName + " blocked " + str(monDeff) + " Damage.")
         cng = atk - monDeff
         if(cng > 0):
             monHealth -= cng
         print(GREEN + "Your health: " + str(health) + RED + "     Monster health: " + str(monHealth) + END)
-        sleep(0.5)
+        sleep(0.3)
         if(monHealth <= 0):
             monster = 0
             break
 
-        monAtk = randint(10*lvl, 20*lvl)
+        monAtk = randint(18+floor, 20+floor)
         monLuck = randint(1,10)
-        if(monLuck == 1):
+        if(monLuck <= 2):
             monAtk = 0
             print(GREEN + monsterName + " missed" + END)
         elif(monLuck == 10):
-            monAtk = monAtk*2
+            monAtk = monAtk+(5*lvl)
             print(RED + monsterName + " got a critical hit" + END)
-        print(monsterName + " attacked with " + str(monAtk) + " Damage.")
-        print("you blocked " + str(deff) + " Damage.")
+        print(monsterName + " attack: " + str(monAtk) + " Damage.")
+        print("player blocked " + str(deff) + " Damage.")
         cng = monAtk - deff
         if(cng > 0):
             health -= cng
         print(GREEN + "Your health: " + str(health) + RED + "      Monster health: " + str(monHealth) + END)
-        sleep(0.5)
+        sleep(0.3)
         if(health <= 0):
             break
         if(monHealth == 20 and health == startHealth):
@@ -995,6 +1009,7 @@ def battle():
                         inv[slot] = mkItem()
                         inv[slot].name = inv[slot].name + " of " + userQuest.title
                         inv[slot].strength = round(inv[slot].strength*1.3)
+                        print(GREEN + "You picked up a " + inv[slot].name + " with a strength of " + str(inv[slot].strength) + END )
                         userQuest = Quest("Empty", 0, 0)
                         clear()
                 elif (confirm == "no" or confirm == "n"):
@@ -1006,28 +1021,29 @@ def battle():
                     sleep(1)
         else:
             gold += round(monDeff/2)
-            print("you found an item, Pick it up?")
-            check = 0
-            while(check == 0):
-                confirm = input("--->> ").lower()
-                if (confirm == "yes" or confirm == "y"):
-                    check = 1
-                    slot = findOpen()
-                    if(slot == 6):
-                        print(RED + "Sorry, but you don't have any free inventory to pick it up" + END)
-                        sleep(2)
-                        clear()
-                    else:
-                        inv[slot] = mkItem()
-                        clear()
-                        print(GREEN + "You picked up a " + inv[slot].name + " with a strength of " + str(inv[slot].strength) + END )
-                elif (confirm == "no" or confirm == "n"):
-                    clear()
-                    check = 1
-                else:
-                    print(RED + "please type yes or no" + END)
-                    sleep(1)
-        
+            if(maxFloor - floor <= 3):
+                if(randint(1,10)>= 4):
+                    print("you found an item, Pick it up?")
+                    check = 0
+                    while(check == 0):
+                        confirm = input("--->> ").lower()
+                        if (confirm == "yes" or confirm == "y"):
+                            check = 1
+                            slot = findOpen()
+                            if(slot == 6):
+                                print(RED + "Sorry, but you don't have any free inventory to pick it up" + END)
+                                sleep(2)
+                                clear()
+                            else:
+                                inv[slot] = mkItem()
+                                clear()
+                                print(GREEN + "You picked up a " + inv[slot].name + " with a strength of " + str(inv[slot].strength) + END )
+                        elif (confirm == "no" or confirm == "n"):
+                            clear()
+                            check = 1
+                        else:
+                            print(RED + "please type yes or no" + END)
+                            sleep(1)
         sleep(1)
     elif(monster == 1):
         print(RED + "YOU DIED" + END)
@@ -1041,7 +1057,7 @@ clear()
 while game == 1:
     #in town
     if (town == 1):
-        health = 50
+        health = maxHealth
         print(ORANGE + "Gold - " +str(gold) + RED + "  Max Depth - " + str(maxFloor) + GREEN + "  Health - " + str(health) + END)
         print(GREEN)
         user = input("--->>").lower()
@@ -1083,8 +1099,8 @@ while game == 1:
             if(lvl >= 2):
                 if(userQuest.floor == 0):
                     title = nameList[randint(0,len(nameList)-1)] + " The " + adjList[randint(0,len(adjList)-1)]
-                    floor = randint((lvl-1)*6, lvl*6)
-                    reward = randint(lvl*20, lvl*30)
+                    floor = randint((lvl-1)*7, lvl*7)
+                    reward = randint(lvl*15, lvl*20)
                     quest(title, floor, reward)
                 else:
                     print(RED + "You allready have a quest, finish that one before you get a new one" + END)
@@ -1120,10 +1136,10 @@ while game == 1:
             inventory()
         elif (user == "onward" or user == "onwards"):
             if (encounter == 0):
-                newRoom()
                 health += 2
-                if(health >= 50):
-                    health = 50
+                if(health >= maxHealth):
+                    health = maxHealth
+                newRoom()
             else:
                 print(RED + "you cant leave a room until you finish all encounters" + END)
                 sleep(2)
@@ -1140,7 +1156,7 @@ while game == 1:
 
         elif (user == "help"):
             help()
-        elif (user == "town"):
+        elif (user == "town" or user == 'return'):
             if(health <= 0):
                 town = 1
                 mkStore()
